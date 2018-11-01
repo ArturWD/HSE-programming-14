@@ -28,35 +28,47 @@ namespace Laba_14
             var bird5 = new Bird("Able to grow", 3, 6000);
             var bird6 = new Bird("Red Female", 3, 7000);
 
-            MyQueue<Animal> zoo = new MyQueue<Animal>();
-            MyQueue<Bird> birdSection = new MyQueue<Bird>();
+            Collections<Animal> linqCollection = new Collections<Animal>();
 
-            zoo.Enqueue(animal1);
-            zoo.Enqueue(animal2);
-            zoo.Enqueue(animal3);
-            zoo.Enqueue(animal4);
-            zoo.Enqueue(animal5);
-            zoo.Enqueue(animal6);
-            zoo.Enqueue(animal7);
-            zoo.Enqueue(animal8);
-            zoo.Enqueue(animal9);
-            zoo.Enqueue(animal10);
-            zoo.Enqueue(animal11);
-            zoo.Enqueue(animal12);
-            zoo.Enqueue(bird1);
-            zoo.Enqueue(bird2);
-            zoo.Enqueue(bird3);
-            zoo.Enqueue(bird4);
-            zoo.Enqueue(bird5);
+            linqCollection.zoo.Add(animal1);
+            linqCollection.zoo.Add(animal2);
+            linqCollection.zoo.Add(animal3);
+            linqCollection.zoo.Add(animal4);
+            linqCollection.zoo.Add(animal5);
+            linqCollection.zoo.Add(animal6);
+            linqCollection.zoo.Add(animal7);
+            linqCollection.zoo.Add(animal8);
+            linqCollection.zoo.Add(animal9);
+            linqCollection.zoo.Add(animal10);
+            linqCollection.zoo.Add(animal11);
+            linqCollection.zoo.Add(animal12);
+            linqCollection.zoo.Add(bird1);
+            linqCollection.zoo.Add(bird2);
+            linqCollection.zoo.Add(bird3);
+            linqCollection.zoo.Add(bird4);
+            linqCollection.zoo.Add(bird5);
 
-            birdSection.Enqueue(bird1);
-            birdSection.Enqueue(bird2);
-            birdSection.Enqueue(bird3);
-            birdSection.Enqueue(bird4);
-            birdSection.Enqueue(bird5);
-            birdSection.Enqueue(bird6);
+            linqCollection.birdSection.Add(bird1);
+            linqCollection.birdSection.Add(bird2);
+            linqCollection.birdSection.Add(bird3);
+            linqCollection.birdSection.Add(bird4);
+            linqCollection.birdSection.Add(bird5);
+            linqCollection.birdSection.Add(bird6);
 
+            // First Query
+            Console.WriteLine("Animals with spaces  in their names");
+            var spacy = (from animals in linqCollection.zoo
+                         where animals.Name.Contains(" ")
+                         select animals);
+            foreach (var item in spacy)
+            {
+                Console.WriteLine(item);
+            }
 
+            // Second
+            //Third
+            //Fourth
+            //Fifth
             Console.ReadLine();
         }
     }
