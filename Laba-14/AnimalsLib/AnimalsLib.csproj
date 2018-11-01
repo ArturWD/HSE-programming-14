@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Animal.cs" />
     <Compile Include="Bird.cs" />
+    <Compile Include="Collections.cs" />
     <Compile Include="MyQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
