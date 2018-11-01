@@ -26,7 +26,7 @@ namespace Laba_14
             var bird3 = new Bird("Yellow", 1, 700);
             var bird4 = new Bird("Egg thrower", 3, 2000);
             var bird5 = new Bird("Able to grow", 3, 6000);
-            var bird6 = new Bird("Red Female", 3, 7000);
+            var bird6 = new Bird("Red Female", 3, 8000);
 
             Collections<Animal> linqCollection = new Collections<Animal>();
 
@@ -56,9 +56,11 @@ namespace Laba_14
             linqCollection.birdSection.Add(bird6);
 
             // First Query
-            Console.WriteLine("Animals with spaces  in their names");
+            Console.WriteLine("Select: Animals with spaces  in their names");
+            Console.WriteLine();
             var spacy = (from animals in linqCollection.zoo
                          where animals.Name.Contains(" ")
+                         orderby animals.Name descending
                          select animals);
             foreach (var item in spacy)
             {
@@ -66,9 +68,35 @@ namespace Laba_14
             }
 
             // Second
+            Console.WriteLine("Count: The number of animals heavier than 40");
+            Console.WriteLine();
+            var heavyAnimals = (from animals in linqCollection.zoo
+                         where animals.Weight > 40
+                         select animals).Count<Animal>();
+            Console.WriteLine(heavyAnimals);
+            Console.WriteLine();
+
             //Third
+            Console.WriteLine("Intersection: Birds from animals collection with fight distance fewer than 8000 ");
+            Console.WriteLine();
+            var birdsFromAnimals = 
+
+            Console.WriteLine();
+
+
             //Fourth
+            Console.WriteLine("Animals with spaces  in their names");
+            Console.WriteLine();
+
+            Console.WriteLine();
+
+
             //Fifth
+            Console.WriteLine("Animals with spaces  in their names");
+            Console.WriteLine();
+
+
+
             Console.ReadLine();
         }
     }
