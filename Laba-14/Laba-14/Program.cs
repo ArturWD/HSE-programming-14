@@ -79,14 +79,23 @@ namespace Laba_14
             //Third
             Console.WriteLine("Intersection: Birds from animals collection with fight distance fewer than 8000 ");
             Console.WriteLine();
-            var birdsFromAnimals = 
+            var birdsFromAnimals = (from animals in linqCollection.zoo
+                                    select animals).Intersect(from birds in linqCollection.birdSection
+                                                              where ((Bird)birds).FlightDistance < 8000
+                                                              select birds);
+            foreach (var item in birdsFromAnimals)
+            {
+                ((Bird)item).ShowCreature();
+            }
 
             Console.WriteLine();
 
 
             //Fourth
-            Console.WriteLine("Animals with spaces  in their names");
+            Console.WriteLine("Aggregate");
             Console.WriteLine();
+            Func<int, int, int> summa = delegate (int a, int b) { return a + b; };
+            int sum2 = arr1.Aggregate<int>(summa);
 
             Console.WriteLine();
 
