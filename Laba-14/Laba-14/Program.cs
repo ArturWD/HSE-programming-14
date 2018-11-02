@@ -21,11 +21,11 @@ namespace Laba_14
             var animal11 = new Animal("Deer", 300);
             var animal12 = new Animal("Croco", 300);
 
-            var bird1 = new Bird("Red", 3, 7000);
+            var bird1 = new Bird("Red", 22, 7000);
             var bird2 = new Bird("Bomb", 30, 14000);
             var bird3 = new Bird("Yellow", 1, 700);
-            var bird4 = new Bird("Egg thrower", 3, 2000);
-            var bird5 = new Bird("Able to grow", 3, 6000);
+            var bird4 = new Bird("Egg thrower", 4, 2000);
+            var bird5 = new Bird("Able to grow", 7, 6000);
             var bird6 = new Bird("Red Female", 3, 8000);
 
             Collections<Animal> linqCollection = new Collections<Animal>();
@@ -77,11 +77,11 @@ namespace Laba_14
             Console.WriteLine();
 
             //Third
-            Console.WriteLine("Intersection: Birds from animals collection with fight distance fewer than 8000 ");
+            Console.WriteLine("Intersection: Birds from animals collection with fight distance fewer than 7000 ");
             Console.WriteLine();
             var birdsFromAnimals = (from animals in linqCollection.zoo
                                     select animals).Intersect(from birds in linqCollection.birdSection
-                                                              where ((Bird)birds).FlightDistance < 8000
+                                                              where ((Bird)birds).FlightDistance < 7000
                                                               select birds);
             foreach (var item in birdsFromAnimals)
             {
@@ -92,19 +92,21 @@ namespace Laba_14
 
 
             //Fourth
-            Console.WriteLine("Aggregate");
+            Console.WriteLine("Aggregate : First letters of every name (from birds)");
             Console.WriteLine();
-            Func<int, int, int> summa = delegate (int a, int b) { return a + b; };
-            int sum2 = arr1.Aggregate<int>(summa);
-
+            Func<string, string, string> totalName = delegate (string a, string b) { return a + b; };
+            string nameAbr = (from birds in linqCollection.birdSection
+                           select birds.Name.Substring(0, 1)).Aggregate(totalName);
+            Console.WriteLine(nameAbr);
             Console.WriteLine();
 
 
             //Fifth
-            Console.WriteLine("Animals with spaces  in their names");
+            Console.WriteLine("Lambda: max weight of a bird with spaces in it's name");
             Console.WriteLine();
-
-
+            Func<Animal, double> weight = delegate (Animal b) { return b.Weight; };
+            var maxDistance = linqCollection.birdSection.Where(b => b.Name.Contains(" ")).Select(weight).Max();
+            Console.WriteLine(maxDistance);
 
             Console.ReadLine();
         }
