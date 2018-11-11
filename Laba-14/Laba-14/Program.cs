@@ -31,9 +31,10 @@ namespace Laba_14
 
             zoo.Add("Birds", new List<Animal> { bird1, bird2, bird3, bird4, bird5, bird6 });
             zoo.Add("Random Animals", new List<Animal> {animal1, animal2, animal3, animal4, animal5,
-                animal6, animal7, animal8, animal9, animal10, animal11, animal12});
+                animal6, animal7, animal8, animal9, animal10, animal11, animal12, bird1, bird2, bird3, bird4});
         }
 
+        // Select Linq
         static void First(Dictionary<string, List<Animal>> zoo)
         {
             // First Query
@@ -48,6 +49,7 @@ namespace Laba_14
                 Console.WriteLine(item);
             }
         }
+        // Count Linq
         static void Second(Dictionary<string, List<Animal>> zoo)
         {
             // Second
@@ -59,14 +61,15 @@ namespace Laba_14
             Console.WriteLine(heavyAnimals);
             Console.WriteLine();
         }
+        // Intersection linq
         static void Third(Dictionary<string, List<Animal>> zoo)
         {
             //Third
-            Console.WriteLine("Intersection: Birds related to both 'Random Animals' and 'Birds' collections with fight distance fewer than 7000 ");
+            Console.WriteLine("Intersection: Birds related to both 'Random Animals' and 'Birds' collections with fight distance fewer than 10000 ");
             Console.WriteLine();
             var birdsFromAnimals = (from animals in zoo["Random Animals"]
                                     select animals).Intersect(from birds in zoo["Birds"]
-                                                              where ((Bird)birds).FlightDistance < 7000
+                                                              where ((Bird)birds).FlightDistance < 10000
                                                               select birds);
             foreach (var item in birdsFromAnimals)
             {
@@ -75,27 +78,87 @@ namespace Laba_14
 
             Console.WriteLine();
         }
+        // Linq Aggregate
         static void Fourth(Dictionary<string, List<Animal>> zoo)
         {
             //Fourth
             Console.WriteLine("Aggregate : First letters of every name (from birds)");
-            Console.WriteLine();
+           
             Func<string, string, string> totalName = delegate (string a, string b) { return a + b; };
             string nameAbr = (from birds in zoo["Birds"]
                               select birds.Name.Substring(0, 1)).Aggregate(totalName);
             Console.WriteLine(nameAbr);
             Console.WriteLine();
         }
+
+        // Extension Aggregate
         static void Fifth(Dictionary<string, List<Animal>> zoo)
         {
             //Fifth
             Console.WriteLine("Lambda: max weight of a bird with spaces in it's name");
-            Console.WriteLine();
+            
             Func<Animal, double> weight = delegate (Animal b) { return b.Weight; };
             var maxDistance = zoo["Birds"].Where(b => b.Name.Contains(" ")).Select(weight).Max();
             Console.WriteLine(maxDistance);
+            Console.WriteLine();
 
-            Console.ReadLine();
+        }
+        // Extension Count
+        static void Sixth(Dictionary<string, List<Animal>> zoo)
+        {
+            Console.WriteLine("Lambda: the amount of birds with spaces in it's name");
+            Console.WriteLine();
+            Func<Animal, double> weight = delegate (Animal b) { return b.Weight; };
+            var maxDistance = zoo["Birds"].Where(b => b.Name.Contains(" ")).Select(weight).Count();
+            Console.WriteLine(maxDistance);
+        }
+
+        // Extension SelectMany
+        static void Seventh(Dictionary<string, List<Animal>> zoo)
+        {
+            Console.WriteLine("Select many: options for birds accomodation");
+            var combinations = (zoo.Keys).SelectMany(b => zoo["Birds"], (s, b) => new { Section = s, Name = b });
+            foreach (var item in combinations)
+            {
+                Console.WriteLine(item.Section+"  "+item.Name);
+            }
+            Console.WriteLine();
+        }
+
+        // Extension Except 
+        static void Eighth(Dictionary<string, List<Animal>> zoo)
+        {
+            Console.WriteLine("Except: Birds unique for birds section");
+            var unique = zoo["Birds"].Except(zoo["Random Animals"].Where(a => a is Bird)).Select(a => new { Name = a.Name});
+            foreach (var item in unique)
+            {
+                Console.WriteLine(item.Name);
+            }
+            Console.WriteLine();
+        }
+        // Custom Extension
+        static void Nineth(Dictionary<string, List<Animal>> zoo)
+        {
+            Console.WriteLine("Birds from animals section");
+            var birds = zoo["Random Animals"].GetBirds();
+            foreach (var item in birds)
+            {
+                Console.WriteLine(item.ToString());
+            }
+            Console.WriteLine();
+        }
+        // One more for Linq
+        static void Tentn(Dictionary<string, List<Animal>> zoo)
+        {
+            Console.WriteLine("Subquery and projection: name and flight distance of birds with weight higher than average");
+            Console.WriteLine();
+            var birds = zoo["Birds"]
+                .Where(b => b.Weight > zoo["Birds"].Select(i => i.Weight).Average())
+                .Select(b => new { Name = b.Name, FlightDistance = ((Bird)b).FlightDistance});
+            foreach (var item in birds)
+            {
+                Console.WriteLine(item.Name +"  "+item.FlightDistance);
+            }
         }
         static void Main(string[] args)
         {
@@ -106,9 +169,14 @@ namespace Laba_14
             Third(zoo);
             Fourth(zoo);
             Fifth(zoo);
+            Sixth(zoo);
+            Seventh(zoo);
+            Eighth(zoo);
+            Nineth(zoo);
+            Tentn(zoo);
 
 
-            
+            Console.ReadLine();
         }
     }
 }
