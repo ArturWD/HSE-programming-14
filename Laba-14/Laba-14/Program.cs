@@ -1,12 +1,13 @@
 ﻿using AnimalsLib;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Laba_14
 {
     class Program
     {
-        static void Main(string[] args)
+        static void FillIn(Dictionary<string, List<Animal>> zoo)
         {
             var animal1 = new Animal("Big Bobby", 300);
             var animal2 = new Animal("Mad Creature", 100);
@@ -28,37 +29,17 @@ namespace Laba_14
             var bird5 = new Bird("Able to grow", 7, 6000);
             var bird6 = new Bird("Red Female", 3, 8000);
 
-            Collections<Animal> linqCollection = new Collections<Animal>();
+            zoo.Add("Birds", new List<Animal> { bird1, bird2, bird3, bird4, bird5, bird6 });
+            zoo.Add("Random Animals", new List<Animal> {animal1, animal2, animal3, animal4, animal5,
+                animal6, animal7, animal8, animal9, animal10, animal11, animal12});
+        }
 
-            linqCollection.zoo.Add(animal1);
-            linqCollection.zoo.Add(animal2);
-            linqCollection.zoo.Add(animal3);
-            linqCollection.zoo.Add(animal4);
-            linqCollection.zoo.Add(animal5);
-            linqCollection.zoo.Add(animal6);
-            linqCollection.zoo.Add(animal7);
-            linqCollection.zoo.Add(animal8);
-            linqCollection.zoo.Add(animal9);
-            linqCollection.zoo.Add(animal10);
-            linqCollection.zoo.Add(animal11);
-            linqCollection.zoo.Add(animal12);
-            linqCollection.zoo.Add(bird1);
-            linqCollection.zoo.Add(bird2);
-            linqCollection.zoo.Add(bird3);
-            linqCollection.zoo.Add(bird4);
-            linqCollection.zoo.Add(bird5);
-
-            linqCollection.birdSection.Add(bird1);
-            linqCollection.birdSection.Add(bird2);
-            linqCollection.birdSection.Add(bird3);
-            linqCollection.birdSection.Add(bird4);
-            linqCollection.birdSection.Add(bird5);
-            linqCollection.birdSection.Add(bird6);
-
+        static void First(Dictionary<string, List<Animal>> zoo)
+        {
             // First Query
             Console.WriteLine("Select: Animals with spaces  in their names");
             Console.WriteLine();
-            var spacy = (from animals in linqCollection.zoo
+            var spacy = (from animals in zoo["Random Animals"]
                          where animals.Name.Contains(" ")
                          orderby animals.Name descending
                          select animals);
@@ -66,21 +47,25 @@ namespace Laba_14
             {
                 Console.WriteLine(item);
             }
-
+        }
+        static void Second(Dictionary<string, List<Animal>> zoo)
+        {
             // Second
             Console.WriteLine("Count: The number of animals heavier than 40");
             Console.WriteLine();
-            var heavyAnimals = (from animals in linqCollection.zoo
-                         where animals.Weight > 40
-                         select animals).Count<Animal>();
+            var heavyAnimals = (from animals in zoo["Random Animals"]
+                                where animals.Weight > 40
+                                select animals).Count<Animal>();
             Console.WriteLine(heavyAnimals);
             Console.WriteLine();
-
+        }
+        static void Third(Dictionary<string, List<Animal>> zoo)
+        {
             //Third
-            Console.WriteLine("Intersection: Birds from animals collection with fight distance fewer than 7000 ");
+            Console.WriteLine("Intersection: Birds related to both 'Random Animals' and 'Birds' collections with fight distance fewer than 7000 ");
             Console.WriteLine();
-            var birdsFromAnimals = (from animals in linqCollection.zoo
-                                    select animals).Intersect(from birds in linqCollection.birdSection
+            var birdsFromAnimals = (from animals in zoo["Random Animals"]
+                                    select animals).Intersect(from birds in zoo["Birds"]
                                                               where ((Bird)birds).FlightDistance < 7000
                                                               select birds);
             foreach (var item in birdsFromAnimals)
@@ -89,26 +74,41 @@ namespace Laba_14
             }
 
             Console.WriteLine();
-
-
+        }
+        static void Fourth(Dictionary<string, List<Animal>> zoo)
+        {
             //Fourth
             Console.WriteLine("Aggregate : First letters of every name (from birds)");
             Console.WriteLine();
             Func<string, string, string> totalName = delegate (string a, string b) { return a + b; };
-            string nameAbr = (from birds in linqCollection.birdSection
-                           select birds.Name.Substring(0, 1)).Aggregate(totalName);
+            string nameAbr = (from birds in zoo["Birds"]
+                              select birds.Name.Substring(0, 1)).Aggregate(totalName);
             Console.WriteLine(nameAbr);
             Console.WriteLine();
-
-
+        }
+        static void Fifth(Dictionary<string, List<Animal>> zoo)
+        {
             //Fifth
             Console.WriteLine("Lambda: max weight of a bird with spaces in it's name");
             Console.WriteLine();
             Func<Animal, double> weight = delegate (Animal b) { return b.Weight; };
-            var maxDistance = linqCollection.birdSection.Where(b => b.Name.Contains(" ")).Select(weight).Max();
+            var maxDistance = zoo["Birds"].Where(b => b.Name.Contains(" ")).Select(weight).Max();
             Console.WriteLine(maxDistance);
 
             Console.ReadLine();
+        }
+        static void Main(string[] args)
+        {
+            Dictionary<string, List<Animal>> zoo = new Dictionary<string, List<Animal>>();
+            FillIn(zoo);
+            First(zoo);
+            Second(zoo);
+            Third(zoo);
+            Fourth(zoo);
+            Fifth(zoo);
+
+
+            
         }
     }
 }
